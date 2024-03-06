@@ -22,21 +22,20 @@ random_name() {
     echo "${names[$((RANDOM % ${#names[@]}))]}"
 }
 
-# Función para crear los directorios y subdirectorios
-create_directories() {
+# Función para crear los subdirectorios
+create_subdirectories() {
     local level=$1
-    local max_levels=5
-    local num_dirs=10
+    local max_levels=10
     
-    # Crear directorios en el nivel actual
-    for ((i=1; i<=num_dirs; i++)); do
+    # Crear subdirectorios en el nivel actual
+    for ((i=1; i<=10; i++)); do
         dir_name=$(random_name)
-        mkdir -p "$dir_name"
+        mkdir "$dir_name"
         cd "$dir_name"
         
         # Llamar recursivamente a la función para crear subdirectorios si no hemos alcanzado el máximo de niveles
         if [ $level -lt $max_levels ]; then
-            create_directories $((level+1))
+            create_subdirectories $((level+1))
         fi
         
         cd ..
@@ -46,7 +45,14 @@ create_directories() {
 # Cambiar al directorio /var/www/html/
 cd /var/www/html/
 
-# Llamar a la función para comenzar la creación de directorios y subdirectorios
-create_directories 1
+# Crear los directorios en el primer nivel y llamar a la función para crear subdirectorios en cada uno
+for ((i=1; i<=10; i++)); do
+    dir_name=$(random_name)
+    mkdir "$dir_name"
+    cd "$dir_name"
+    create_subdirectories 1
+    cd ..
+done
 
 echo "¡Directorios creados con éxito!"
+
