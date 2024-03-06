@@ -45,14 +45,17 @@ create_subdirectories() {
 # Cambiar al directorio /var/www/html/
 cd /var/www/html/
 
-# Crear los directorios en el primer nivel y llamar a la función para crear subdirectorios en cada uno
+# Crear los directorios en el primer nivel
 for ((i=1; i<=10; i++)); do
     dir_name=$(random_name)
     mkdir "$dir_name"
-    cd "$dir_name"
+done
+
+# Llamar a la función para crear subdirectorios en cada directorio padre
+for directory in */; do
+    cd "$directory"
     create_subdirectories 1
     cd ..
 done
 
 echo "¡Directorios creados con éxito!"
-
